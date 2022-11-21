@@ -16,15 +16,20 @@ tener 3 routers diferentes: userRouter, todoRouter y categoryRouter.
 
 const todoRouter = express.Router();
 
-todoRouter.get('/todo', (req, res) => {
-  res.send({message: 'Hola', requestTime: req.requestTime});
+
+todoRouter.get('/todo',
+(req, res) => {
+  res.send({message: 'Hola', requestTime: req.requestInstant});
 });
 
 todoRouter.post("/todo", validateTodo, (req, res) => {
   const newTodo = req.body;
+
   console.log(newTodo);
-  console.log(req.newDate);
+  console.log(req.requestInstant);
   res.status(201).json(newTodo);
 });
+
+todoRouter.patch("/todo/:id", (req, res) => {});
 
 module.exports = todoRouter;
