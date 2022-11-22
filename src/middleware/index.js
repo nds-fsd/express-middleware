@@ -12,9 +12,11 @@ const validateTodo = (req, res, next) => {
     
     if (todo.name === undefined || todo.name.length === 0) {
         res.status(400).send({message: 'name required'});
+        return;
     }
     if (todo.description === undefined || todo.description.length === 0) {
         res.status(400).send({message: 'description required'});
+        return;
     }
     next();
 };
