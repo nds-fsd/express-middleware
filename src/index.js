@@ -1,8 +1,11 @@
 const express = require('express');
 const { addDateMiddleware } = require('./middleware');
 const app = express();
+cors = require('cors');
 const todoRouter = require('./routers/todo');
 
+
+app.use(cors());
 
 //Le decimos a nuestra app, que vamos recibir peticiones donde el Body contiene texto en formato JSON.
 app.use(express.json());
@@ -16,8 +19,8 @@ app.use(todoRouter);
 //a partir de este punto y gracias a la linea escrita mas arriba, si llega alguna peticion que empieze por /todo, está se redirige hacia todoRouter.
 
 
-app.listen(3000, () => {
-    console.log("Server is up and running in port 3000");
+app.listen(3005, () => {
+    console.log("Server is up and running in port 3005");
 });
 
 

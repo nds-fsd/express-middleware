@@ -14,7 +14,7 @@ const validateTodo = (req, res, next) => {
         res.status(400).send({message: 'name required'});
         return;
     }
-    if (todo.description === undefined || todo.description.length === 0) {
+    if (todo.price === undefined) {
         res.status(400).send({message: 'description required'});
         return;
     }
