@@ -1,9 +1,8 @@
-const express = require('express');
+const express = require("express");
 
 //importamos el fichero con los datos que necesita nuestro Router
-const {todos} = require('../data/index');
-const { addDateMiddleware, validateTodo } = require('../middleware');
-
+const { todos } = require("../data/index");
+const { addDateMiddleware, validateTodo } = require("../middleware");
 
 /*
 
@@ -18,22 +17,37 @@ const todoRouter = express.Router();
 
 const products = [
   {
-    name: 'Galletas con chocolate',
-    price: 3
+    id: 1,
+    name: "Galletas con chocolate",
+    price: 3,
+    description:
+      "Una galleta con pepitas de chocolate o con chispas de chocolate es una galleta de origen estadounidense con pepitas de chocolate como ingrediente distintivo. La receta tradicional combina una masa a base de mantequilla y azúcar moreno o blanco con pepitas de chocolate semidulces. Las variaciones incluyen recetas con otros tipos de chocolate o ingredientes adicionales, como nueces o avena.",
   },
   {
-    name: 'Turron del güeno',
-    price: 12
+    id: 2,
+    name: "Turron del güeno",
+    price: 12,
+    description:
+      "El turrón (en francés, tourron; en italiano, torrone; en portugués, torrão, en catalán, torró) es una golosina proveniente del sudeste de Europa, compuesta generalmente de miel, azúcar y de clara de huevo revuelto con almendras tostadas y otros frutos secos, de forma rectangular o circular.",
   },
   {
-    name: 'Polvorones',
-    price: 5
+    id: 3,
+    name: "Polvorones",
+    price: 5,
+    description:
+      "El polvorón es una torta, comúnmente pequeña, de harina, manteca y azúcar, cocida en horno fuerte. En la actualidad es un producto típico de la repostería navideña de España y de muchos lugares hispanohablantes que trae su denominación de deshacerse en polvo al comerlo.",
   },
 ];
 
-todoRouter.get('/todo',
-(req, res) => {
-  res.send({message: 'hola', data: products});
+todoRouter.get("/todo", (req, res) => {
+  res.send({ message: "hola", data: products });
+});
+
+todoRouter.get("/todo/:productId", (req, res) => {
+  const id = req.params.productId;
+
+  const product = products.filter((element) => element.id === Number(id));
+  res.send(product[0]);
 });
 
 todoRouter.post("/todo", validateTodo, (req, res) => {
