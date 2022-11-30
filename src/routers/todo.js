@@ -3,6 +3,7 @@ const express = require('express');
 //importamos el fichero con los datos que necesita nuestro Router
 const {todos} = require('../data/index');
 const { addDateMiddleware, validateTodo } = require('../middleware');
+const User = require('../mongo/schemas/user');
 
 
 /*
@@ -16,31 +17,60 @@ tener 3 routers diferentes: userRouter, todoRouter y categoryRouter.
 
 const todoRouter = express.Router();
 
-const products = [
-  {
-    name: 'Galletas con chocolate',
-    price: 3
-  },
-  {
-    name: 'Turron del güeno',
-    price: 12
-  },
-  {
-    name: 'Polvorones',
-    price: 5
-  },
-];
+todoRouter.get('/', async (req, res) => {
+  const allUsers = await User.find();
+  res.json(allUsers);
+})
 
-todoRouter.get('/todo',
-(req, res) => {
-  res.send({message: 'hola', data: products});
+
+todoRouter.get('/:id', async (req, res) => {
+  const allUsers = await User.findById(req.params.id);
+  res.json(allUsers);
+})
+
+todoRouter.post('/search', async (req, res) => {
+  const allUsers = await User.find(req.body);
+  res.json(allUsers);
+})
+
+todoRouter.patch('/:id', async (req, res) => {
+  const allUsers = await User.findByIdAndUpdate(req.params.id, req.body);
+  res.json(allUsers);
 });
 
-todoRouter.post("/todo", validateTodo, (req, res) => {
-  products.push(req.body);
-  res.status(201).json(products);
-});
+todoRouter.patch('/query/:name', async (req, res) => {
+  const filter = {
+      name: req.params.name
+  };
+  const allUsers = await User.findOneAndUpdate(filter, req.body);
+  res.json(allUsers);
+})
 
-todoRouter.patch("/todo/:id", (req, res) => {});
+todoRouter.delete('/:id', async (req, res) => {
+  const allUsers = await User.findByIdAndDelete(req.params.id);
+  res.json(allUsers);
+})
+
+todoRouter.post("/", async(req, res) => {
+  //recogemos el body de la request
+  const body = req.body;
+
+  console.log(body);
+
+  const data = {
+      name: body.name,
+      email: body.email,
+      lastName: body.lastName
+  };
+
+  //creamos una nueva instancia de user,
+  const newUser = new User(data);
+
+  //lo guardamos en mongo
+  await newUser.save()
+
+  //devolvemos respuesta
+  res.json(newUser);
+});
 
 module.exports = todoRouter;

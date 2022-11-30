@@ -3,6 +3,7 @@ const { addDateMiddleware } = require('./middleware');
 const app = express();
 cors = require('cors');
 const todoRouter = require('./routers/todo');
+const mongo = require('./mongo');
 
 
 app.use(cors());
