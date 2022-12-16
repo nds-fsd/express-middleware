@@ -15,7 +15,7 @@ const create = async (req, res) => {
   const newRestaurant = new Restaurant(req.body);
 //   try {
     await newRestaurant.save();
-    res.send(restaurant);
+    res.send(newRestaurant);
 //   } catch (error) {
 //     res
 //       .status(400)
