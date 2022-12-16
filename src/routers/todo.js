@@ -1,7 +1,5 @@
 const express = require("express");
 
-//importamos el fichero con los datos que necesita nuestro Router
-const { todos } = require("../data/index");
 const { addDateMiddleware, validateTodo } = require("../middleware");
 
 /*
