@@ -1,6 +1,5 @@
 const express = require("express");
 
-const { addDateMiddleware, validateTodo } = require("../middleware");
 
 /*
 
@@ -37,22 +36,22 @@ const products = [
   },
 ];
 
-todoRouter.get("/todo", (req, res) => {
+todoRouter.get("/", (req, res) => {
   res.send({ message: "hola", data: products });
 });
 
-todoRouter.get("/todo/:productId", (req, res) => {
+todoRouter.get("/:productId", (req, res) => {
   const id = req.params.productId;
 
   const product = products.filter((element) => element.id === Number(id));
   res.send(product[0]);
 });
 
-todoRouter.post("/todo", validateTodo, (req, res) => {
+todoRouter.post("/", (req, res) => {
   products.push(req.body);
   res.status(201).json(products);
 });
 
-todoRouter.patch("/todo/:id", (req, res) => {});
+todoRouter.patch("/:id", (req, res) => {});
 
 module.exports = todoRouter;
