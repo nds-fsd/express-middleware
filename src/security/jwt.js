@@ -56,23 +56,23 @@ authRouter.post('/login', async (req,res) => {
         return res.status(400).json( { error: { login: "Missing email or password"}})
     }
     User.findOne({ email })
-    .then((user) => {
+    .then((foundUser) => {
         // * Validate user email is already registered
-        if (!user) {
+        if (!foundUser) {
             return res.status(400).json( { error: { email: "User not found, please Register"}})
         }
         // * Validate password with bcrypt library
-        // if (!user.comparePassword(password)) {
-        if (user.password !== password) {
+         if (!foundUser.comparePassword(password)) {
+       // if (foundUser.password !== password) {
             return res.status(400).json( { error: { password: "Invalid Password"}})
         }
         // * if everything is ok, return the new token and user data
         return res.status(200).json({
-            token: user.generateJWT(), 
+            token: foundUser.generateJWT(), 
             user: {
-                 email: user.email,
-                 name: user.name,
-                 id: user._id,
+                 email: foundUser.email,
+                 name: foundUser.name,
+                 id: foundUser._id,
             },
         })
     })
@@ -103,7 +103,6 @@ const jwtMiddleware = (req, res, next) => {
   
     // Guardamos los datos del token dentro de req.jwtPayload, para que esté accesible en los próximos objetos req
     req.jwtPayload = tokenPayload;
-    console.log('llego al next')
     next();
   }
 

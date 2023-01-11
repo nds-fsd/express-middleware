@@ -13,30 +13,30 @@ const UserSchema = new Schema({
 
 
 
-// //esta funcion se ejecuta "antes" de guardar cualquier usuario en Mongo
-// UserSchema.pre('save',  function(next) {
-// 	const user = this;
+//esta funcion se ejecuta "antes" de guardar cualquier usuario en Mongo
+UserSchema.pre('save',  function(next) {
+	const user = this;
 
-// 	//si no se ha cambiado la contraseña, seguimos
-// 	if (!user.isModified('password')) return next();
+	//si no se ha cambiado la contraseña, seguimos
+	if (!user.isModified('password')) return next();
 
-// 	//brcypt es una libreria que genera "hashes", encriptamos la contraseña
-// 	bcrypt.genSalt(10, function(err, salt) {
-// 		if (err) return next(err);
+	//brcypt es una libreria que genera "hashes", encriptamos la contraseña
+	bcrypt.genSalt(10, function(err, salt) {
+		if (err) return next(err);
 
-// 		bcrypt.hash(user.password, salt, function(err, hash) {
-// 			if (err) return next(err);
+		bcrypt.hash(user.password, salt, function(err, hash) {
+			if (err) return next(err);
 
-// 			// si no ha habido error en el encryptado, guardamos
-// 			user.password = hash;
-// 			next();
-// 		});
-// 	});
-// });
+			// si no ha habido error en el encryptado, guardamos
+			user.password = hash;
+			next();
+		});
+	});
+});
 
-// UserSchema.methods.comparePassword = function(password) {
-// 	return bcrypt.compareSync(password, this.password);
-// };
+UserSchema.methods.comparePassword = function(password) {
+	return bcrypt.compareSync(password, this.password);
+};
 
 // * Method to generate the JWT (You choose the name)
 UserSchema.methods.generateJWT = function() {
