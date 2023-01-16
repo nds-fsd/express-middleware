@@ -1,5 +1,8 @@
 const express = require("express");
 
+//importamos el fichero con los datos que necesita nuestro Router
+const { todos } = require("../data/index");
+const { addDateMiddleware, validateTodo } = require("../middleware");
 
 /*
 
@@ -36,22 +39,22 @@ const products = [
   },
 ];
 
-todoRouter.get("/", (req, res) => {
+todoRouter.get("/todo", (req, res) => {
   res.send({ message: "hola", data: products });
 });
 
-todoRouter.get("/:productId", (req, res) => {
+todoRouter.get("/todo/:productId", (req, res) => {
   const id = req.params.productId;
 
   const product = products.filter((element) => element.id === Number(id));
   res.send(product[0]);
 });
 
-todoRouter.post("/", (req, res) => {
+todoRouter.post("/todo", validateTodo, (req, res) => {
   products.push(req.body);
   res.status(201).json(products);
 });
 
-todoRouter.patch("/:id", (req, res) => {});
+todoRouter.patch("/todo/:id", (req, res) => {});
 
 module.exports = todoRouter;
