@@ -8,10 +8,8 @@ const UserSchema = new Schema({
     email: { type: String, required: true, unique: true, trim: true},
 	password: {type: String, required: true},
 	firstName: {type: String, required: true},
+	role: {type: String}
 });
-
-
-
 
 //esta funcion se ejecuta "antes" de guardar cualquier usuario en Mongo
 UserSchema.pre('save',  function(next) {
@@ -49,6 +47,7 @@ UserSchema.methods.generateJWT = function() {
 		id: this._id,
 		name: this.firstName,
 		email: this.email,
+		role: this.role
 	};
 	// * This method is from the json-web-token library (who is in charge to generate the JWT
 	return jwt.sign(payload,secret, {

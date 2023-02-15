@@ -23,6 +23,7 @@ authRouter.post('/register',(req,res) => {
             email: data.email,
             password: data.password,
             firstName: data.firstName,
+            role: data.role
           })
           
         newUser.save()
@@ -33,6 +34,7 @@ authRouter.post('/register',(req,res) => {
                      email: createdUser.email,
                      name: createdUser.name, 
                      id: createdUser._id,
+                     role: createdUser.role
                 },
             })
         }))
@@ -73,6 +75,7 @@ authRouter.post('/login', async (req,res) => {
                  email: foundUser.email,
                  name: foundUser.name,
                  id: foundUser._id,
+                 role: foundUser.role
             },
         })
     })
@@ -103,6 +106,7 @@ const jwtMiddleware = (req, res, next) => {
   
     // Guardamos los datos del token dentro de req.jwtPayload, para que esté accesible en los próximos objetos req
     req.jwtPayload = tokenPayload;
+    console.log(tokenPayload);
     next();
   }
 
