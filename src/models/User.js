@@ -34,9 +34,9 @@ const UserSchema = new Schema({
 // 	});
 // });
 
-// UserSchema.methods.comparePassword = function(password) {
-// 	return bcrypt.compareSync(password, this.password);
-// };
+UserSchema.methods.comparePassword = function(password) {
+	return bcrypt.compareSync(password, this.password);
+};
 
 // * Method to generate the JWT (You choose the name)
 UserSchema.methods.generateJWT = function() {
@@ -49,6 +49,7 @@ UserSchema.methods.generateJWT = function() {
 		id: this._id,
 		name: this.firstName,
 		email: this.email,
+        algo:'Hola desde el modelo de USER!!!'
 	};
 	// * This method is from the json-web-token library (who is in charge to generate the JWT
 	return jwt.sign(payload,secret, {
@@ -61,3 +62,22 @@ const User = mongoose.model('User', UserSchema);
 
 
 module.exports = User;
+
+//Lo de arriba es exactamente lo mismo que esto pero a traves de mongoose
+
+// class User {
+//     constructor(){
+//         this.id = 1
+//     }
+
+//     generateJWT(){
+//         //hara algo y regresa el jwt
+//         return 'jwt'
+//     }
+
+// }
+
+
+// const Patricio = new User()
+
+// Patricio.generateJWT()

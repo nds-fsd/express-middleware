@@ -37,7 +37,7 @@ const products = [
 ];
 
 todoRouter.get("/", (req, res) => {
-  res.send({ message: "hola", data: products });
+  res.send({ message: "hola", data: products, jwtInfo: req.jwtPayload });
 });
 
 todoRouter.get("/:productId", (req, res) => {

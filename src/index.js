@@ -5,12 +5,9 @@ const app = express();
 // importamos dotenv para poder gestionar variables de entorno y configuramos
 const dotenv = require('dotenv');
 dotenv.config();
-const port = process.env.port || 3005;
+const port = process.env.PORT || 3005;
 
 require('./mongo')
-
-
-
 
 cors = require('cors');
 
