@@ -15,18 +15,25 @@ const databaseURL = process.env.DATABASE_URL;
 
 
 // if we have a full mongoUrl defined in the .env then use it to start an online connection
-if(mongoUrl){
-	mongoose.connect(databaseURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, });
-}else{
-    // otherwise simply look for the user and password 
-    // (just like in the DOCKER-COMPOSE file)
-	if(databaseUser && databasePassword) {
-		mongoose.connect(`mongodb://${databaseUser}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}?authSource=admin`, {useNewUrlParser: true, useUnifiedTopology: true});
-	}else {
-		mongoose.connect(`mongodb://${databaseHost}:${databasePort}/${databaseName}?authSource=admin`, {useNewUrlParser: true, useUnifiedTopology: true});
-	}
+const connectDB = ()=>{
+
+    if(mongoUrl){
+        mongoose.connect(databaseURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, });
+    }else{
+        // otherwise simply look for the user and password 
+        // (just like in the DOCKER-COMPOSE file)
+        if(databaseUser && databasePassword) {
+            mongoose.connect(`mongodb://${databaseUser}:${databasePassword}@${databaseHost}:${databasePort}/${databaseName}?authSource=admin`, {useNewUrlParser: true, useUnifiedTopology: true});
+        }else {
+            mongoose.connect(`mongodb://${databaseHost}:${databasePort}/${databaseName}?authSource=admin`, {useNewUrlParser: true, useUnifiedTopology: true});
+        }
+    }
 }
 
+const disconnectDB = () =>{
+    mongoose.disconnect()
+}
+connectDB()
 
 // some configuration
 mongoose.set("strictQuery", false);
@@ -37,4 +44,4 @@ mongo.once("open", () => {
   console.log("connected to database 🖲️🖲️");
 });
 
-module.exports = { mongo };
+module.exports = { mongo, connectDB, disconnectDB };
