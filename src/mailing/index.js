@@ -17,7 +17,7 @@ const DEFAULT_MESSAGE = {
     html:`<h1>Hello</h1>`
 }
 
-const sendMail = (message ) =>{
+const sendMail = ( message ) =>{
     return sg.send({...DEFAULT_MESSAGE,...message})
 }
 
@@ -31,7 +31,7 @@ const message = {
     to
 }
 
-return sg.send(message)
+return sendMail(message)
 }
 
 module.exports = {sendMail,sendWelcomeMail}

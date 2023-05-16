@@ -28,7 +28,14 @@ authRouter.post("/register", async (req, res) => {
     });
     const savedUser = await newUser.save();
     if (savedUser) {
-        await sendWelcomeMail(savedUser.email, savedUser.name)
+      try {
+        await sendWelcomeMail(savedUser.email, savedUser.name);
+      } catch (e) {
+        console.error({
+          error: e,
+          message: "FAILED TO SEND REGISTER MAIL TO " + savedUser.name,
+        });
+      }
       return res.status(201).json({
         token: savedUser.generateJWT(),
         user: {
@@ -63,8 +70,8 @@ authRouter.post("/login", async (req, res) => {
         .json({ error: { email: "User not found, please Register" } });
     }
     // * Validate password with bcrypt library
-    //if (!foundUser.comparePassword(password)) { 
-      if (foundUser.password !== password) {
+    //if (!foundUser.comparePassword(password)) {
+    if (foundUser.password !== password) {
       return res.status(400).json({ error: { password: "Invalid Password" } });
     }
     // * if everything is ok, return the new token and user data
@@ -92,7 +99,8 @@ const jwtMiddleware = (req, res, next) => {
     return res.status(401).json({ error: "Unauthorized MISSING HEADER" });
   const token = authHeader.split(" ")[1];
   // Si no hubiera token, respondemos con un 401
-  if (!token) return res.status(401).json({ error: "Unauthorized and missing token" });
+  if (!token)
+    return res.status(401).json({ error: "Unauthorized and missing token" });
 
   let tokenPayload;
 
