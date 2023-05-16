@@ -6,6 +6,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 const port = process.env.PORT || 3005;
+require('./mailing')
 
 require('./mongo')
 

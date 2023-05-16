@@ -1,6 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { sendWelcomeMail } = require("../mailing");
 const jwtSecret = process.env.JWT_SECRET;
 
 const authRouter = express.Router();
@@ -27,6 +28,7 @@ authRouter.post("/register", async (req, res) => {
     });
     const savedUser = await newUser.save();
     if (savedUser) {
+        await sendWelcomeMail(savedUser.email, savedUser.name)
       return res.status(201).json({
         token: savedUser.generateJWT(),
         user: {
